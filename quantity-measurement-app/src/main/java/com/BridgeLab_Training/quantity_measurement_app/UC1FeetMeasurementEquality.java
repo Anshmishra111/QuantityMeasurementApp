@@ -1,54 +1,70 @@
 package com.BridgeLab_Training.quantity_measurement_app;
 
-class UC1FeetMeasurementEquality {
+public class UC1FeetMeasurementEquality {
 
-	    // Inner class to represent Feet measurement
-	    public static class Feet {
-	        private final double value;
+    // Common base class (DRY improvement)
+    public static abstract class Measurement {
+        protected final double value;
 
-	        // Constructor
-	        public Feet(double value) {
-	            this.value = value;
-	        }
+        public Measurement(double value) {
+            this.value = value;
+        }
 
-	        // Getter (optional but good practice)
-	        public double getValue() {
-	            return value;
-	        }
+        public double getValue() {
+            return value;
+        }
 
-	        // Override equals() method
-	        @Override
-	        public boolean equals(Object obj) {
+        @Override
+        public boolean equals(Object obj) {
 
-	            // 1. Reference check
-	            if (this == obj) {
-	                return true;
-	            }
+            // Reference check
+            if (this == obj) return true;
 
-	            // 2. Null check
-	            if (obj == null) {
-	                return false;
-	            }
+            // Null check
+            if (obj == null) return false;
 
-	            // 3. Type check
-	            if (this.getClass() != obj.getClass()) {
-	                return false;
-	            }
+            // Type check
+            if (this.getClass() != obj.getClass()) return false;
 
-	            // 4. Cast and compare values
-	            Feet other = (Feet) obj;
-	            return Double.compare(this.value, other.value) == 0;
-	        }
-	    }
+            Measurement other = (Measurement) obj;
 
-	    // Main method (for manual testing)
-	    public static void main(String[] args) {
+            // Floating point comparison
+            return Double.compare(this.value, other.value) == 0;
+        }
+    }
 
-	        Feet f1 = new Feet(1.0);
-	        Feet f2 = new Feet(1.0);
+    // Feet class
+    public static class Feet extends Measurement {
+        public Feet(double value) {
+            super(value);
+        }
+    }
 
-	        boolean result = f1.equals(f2);
+    // Inches class
+    public static class Inches extends Measurement {
+        public Inches(double value) {
+            super(value);
+        }
+    }
 
-	        System.out.println("Are equal? " + result);
-	    }
-	}
+    // Separate demo methods (as UC2 suggests)
+    public static void demonstrateFeetEquality() {
+        Feet f1 = new Feet(1.0);
+        Feet f2 = new Feet(1.0);
+
+        System.out.println("Feet equal? " + f1.equals(f2));
+    }
+
+    public static void demonstrateInchesEquality() {
+        Inches i1 = new Inches(1.0);
+        Inches i2 = new Inches(1.0);
+
+        System.out.println("Inches equal? " + i1.equals(i2));
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        demonstrateFeetEquality();
+        demonstrateInchesEquality();
+    }
+}
