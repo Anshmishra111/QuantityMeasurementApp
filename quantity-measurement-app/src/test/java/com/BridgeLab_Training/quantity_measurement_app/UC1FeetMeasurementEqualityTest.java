@@ -1,91 +1,89 @@
 package com.BridgeLab_Training.quantity_measurement_app;
 
 
-	import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
-import com.BridgeLab_Training.quantity_measurement_app.UC1FeetMeasurementEquality.Feet;
-import com.BridgeLab_Training.quantity_measurement_app.UC1FeetMeasurementEquality.Inches;
 
 public class UC1FeetMeasurementEqualityTest {
 
-    // -------- FEET TESTS --------
+    // ✅ Same-unit equality
 
     @Test
-    public void testFeetEquality_SameValue() {
-        Feet f1 = new Feet(1.0);
-        Feet f2 = new Feet(1.0);
+    public void testEquality_FeetToFeet_SameValue() {
+        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
 
-        assertTrue(f1.equals(f2));
+        assertTrue(l1.equals(l2));
     }
 
     @Test
-    public void testFeetEquality_DifferentValue() {
-        Feet f1 = new Feet(1.0);
-        Feet f2 = new Feet(2.0);
+    public void testEquality_InchToInch_SameValue() {
+        Length l1 = new Length(1.0, Length.LengthUnit.INCHES);
+        Length l2 = new Length(1.0, Length.LengthUnit.INCHES);
 
-        assertFalse(f1.equals(f2));
+        assertTrue(l1.equals(l2));
+    }
+
+    // ✅ Cross-unit equality
+
+    @Test
+    public void testEquality_FeetToInch_EquivalentValue() {
+        Length feet = new Length(1.0, Length.LengthUnit.FEET);
+        Length inches = new Length(12.0, Length.LengthUnit.INCHES);
+
+        assertTrue(feet.equals(inches));
     }
 
     @Test
-    public void testFeetEquality_NullComparison() {
-        Feet f1 = new Feet(1.0);
+    public void testEquality_InchToFeet_EquivalentValue() {
+        Length inches = new Length(12.0, Length.LengthUnit.INCHES);
+        Length feet = new Length(1.0, Length.LengthUnit.FEET);
 
-        assertFalse(f1.equals(null));
+        assertTrue(inches.equals(feet));
+    }
+
+    // ✅ Inequality
+
+    @Test
+    public void testEquality_Feet_DifferentValue() {
+        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length l2 = new Length(2.0, Length.LengthUnit.FEET);
+
+        assertFalse(l1.equals(l2));
     }
 
     @Test
-    public void testFeetEquality_DifferentClass() {
-        Feet f1 = new Feet(1.0);
-        Inches i1 = new Inches(12.0);
+    public void testEquality_Inch_DifferentValue() {
+        Length l1 = new Length(1.0, Length.LengthUnit.INCHES);
+        Length l2 = new Length(2.0, Length.LengthUnit.INCHES);
 
-        assertFalse(f1.equals(i1));
+        assertFalse(l1.equals(l2));
     }
 
-    @Test
-    public void testFeetEquality_SameReference() {
-        Feet f1 = new Feet(1.0);
+    // ✅ Null safety
 
-        assertTrue(f1.equals(f1));
+    @Test
+    public void testEquality_NullComparison() {
+        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
+
+        assertFalse(l1.equals(null));
     }
 
-    // -------- INCHES TESTS --------
+    // ✅ Same reference
 
     @Test
-    public void testInchesEquality_SameValue() {
-        Inches i1 = new Inches(1.0);
-        Inches i2 = new Inches(1.0);
+    public void testEquality_SameReference() {
+        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
 
-        assertTrue(i1.equals(i2));
+        assertTrue(l1.equals(l1));
     }
 
-    @Test
-    public void testInchesEquality_DifferentValue() {
-        Inches i1 = new Inches(1.0);
-        Inches i2 = new Inches(2.0);
-
-        assertFalse(i1.equals(i2));
-    }
+    // ✅ Null unit validation
 
     @Test
-    public void testInchesEquality_NullComparison() {
-        Inches i1 = new Inches(1.0);
-
-        assertFalse(i1.equals(null));
-    }
-
-    @Test
-    public void testInchesEquality_DifferentClass() {
-        Inches i1 = new Inches(1.0);
-        Feet f1 = new Feet(1.0);
-
-        assertFalse(i1.equals(f1));
-    }
-
-    @Test
-    public void testInchesEquality_SameReference() {
-        Inches i1 = new Inches(1.0);
-
-        assertTrue(i1.equals(i1));
+    public void testEquality_NullUnit() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Length(1.0, null);
+        });
     }
 }
