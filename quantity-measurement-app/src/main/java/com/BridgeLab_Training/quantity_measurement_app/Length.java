@@ -5,10 +5,13 @@ public class Length {
     private final double value;
     private final LengthUnit unit;
 
-    // ✅ Enum for Units (Base Unit = FEET)
+    // ✅ Base Unit = FEET
     public enum LengthUnit {
+
         FEET(1.0),
-        INCHES(1.0 / 12.0);   // 12 inches = 1 foot
+        INCHES(1.0 / 12.0),     // 12 inches = 1 foot
+        YARDS(3.0),             // 1 yard = 3 feet
+        CENTIMETERS(0.03280839895); // 1 cm = 0.0328084 feet
 
         private final double conversionFactor;
 
@@ -35,12 +38,13 @@ public class Length {
         return this.value * this.unit.getConversionFactor();
     }
 
-    // ✅ Compare Method
+    // ✅ Compare method
     public boolean compare(Length that) {
-        return Double.compare(this.convertToFeet(), that.convertToFeet()) == 0;
+    	double diff = Math.abs(this.convertToFeet() - that.convertToFeet());
+        return diff < 0.0001; 
     }
 
-    // ✅ equals() Override
+    // ✅ equals override
     @Override
     public boolean equals(Object obj) {
 
@@ -52,7 +56,7 @@ public class Length {
         return this.compare(other);
     }
 
-    // ✅ hashCode() (Important with equals)
+    // ✅ hashCode (important with equals)
     @Override
     public int hashCode() {
         return Double.valueOf(convertToFeet()).hashCode();

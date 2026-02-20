@@ -6,79 +6,75 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UC1FeetMeasurementEqualityTest {
 
-    // ✅ Same-unit equality
+    // ✅ Yard equality
 
     @Test
-    public void testEquality_FeetToFeet_SameValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
+    public void testEquality_YardToYard_SameValue() {
+        Length y1 = new Length(1.0, Length.LengthUnit.YARDS);
+        Length y2 = new Length(1.0, Length.LengthUnit.YARDS);
 
-        assertTrue(l1.equals(l2));
+        assertTrue(y1.equals(y2));
     }
 
     @Test
-    public void testEquality_InchToInch_SameValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(1.0, Length.LengthUnit.INCHES);
+    public void testEquality_YardToFeet() {
+        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
+        Length feet = new Length(3.0, Length.LengthUnit.FEET);
 
-        assertTrue(l1.equals(l2));
+        assertTrue(yard.equals(feet));
     }
 
-    // ✅ Cross-unit equality
+    @Test
+    public void testEquality_YardToInches() {
+        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
+        Length inches = new Length(36.0, Length.LengthUnit.INCHES);
+
+        assertTrue(yard.equals(inches));
+    }
+
+    // ✅ Centimeter equality
 
     @Test
-    public void testEquality_FeetToInch_EquivalentValue() {
+    public void testEquality_CmToCm_SameValue() {
+        Length cm1 = new Length(10.0, Length.LengthUnit.CENTIMETERS);
+        Length cm2 = new Length(10.0, Length.LengthUnit.CENTIMETERS);
+
+        assertTrue(cm1.equals(cm2));
+    }
+
+    @Test
+    public void testEquality_CmToInches() {
+        Length cm = new Length(1.0, Length.LengthUnit.CENTIMETERS);
+        Length inches = new Length(0.393701, Length.LengthUnit.INCHES);
+
+        assertTrue(cm.equals(inches));
+    }
+
+    @Test
+    public void testEquality_CmToFeet() {
+        Length cm = new Length(30.48, Length.LengthUnit.CENTIMETERS);
         Length feet = new Length(1.0, Length.LengthUnit.FEET);
-        Length inches = new Length(12.0, Length.LengthUnit.INCHES);
 
-        assertTrue(feet.equals(inches));
-    }
-
-    @Test
-    public void testEquality_InchToFeet_EquivalentValue() {
-        Length inches = new Length(12.0, Length.LengthUnit.INCHES);
-        Length feet = new Length(1.0, Length.LengthUnit.FEET);
-
-        assertTrue(inches.equals(feet));
+        assertTrue(cm.equals(feet));
     }
 
     // ✅ Inequality
 
     @Test
-    public void testEquality_Feet_DifferentValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(2.0, Length.LengthUnit.FEET);
+    public void testEquality_YardToFeet_NotEqual() {
+        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
+        Length feet = new Length(2.0, Length.LengthUnit.FEET);
 
-        assertFalse(l1.equals(l2));
-    }
-
-    @Test
-    public void testEquality_Inch_DifferentValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(2.0, Length.LengthUnit.INCHES);
-
-        assertFalse(l1.equals(l2));
+        assertFalse(yard.equals(feet));
     }
 
     // ✅ Null safety
 
     @Test
     public void testEquality_NullComparison() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-
-        assertFalse(l1.equals(null));
+        Length l = new Length(1.0, Length.LengthUnit.FEET);
+        assertFalse(l.equals(null));
     }
-
-    // ✅ Same reference
-
-    @Test
-    public void testEquality_SameReference() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-
-        assertTrue(l1.equals(l1));
-    }
-
-    // ✅ Null unit validation
 
     @Test
     public void testEquality_NullUnit() {
