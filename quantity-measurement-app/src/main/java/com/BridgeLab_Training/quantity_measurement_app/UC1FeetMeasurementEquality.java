@@ -2,42 +2,56 @@ package com.BridgeLab_Training.quantity_measurement_app;
 
 public class UC1FeetMeasurementEquality {
 
-    public static boolean demonstrateLengthComparison(
-            double value1, Length.LengthUnit unit1,
-            double value2, Length.LengthUnit unit2) {
-
-        Length l1 = new Length(value1, unit1);
-        Length l2 = new Length(value2, unit2);
-
+    // Equality demo
+    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
         boolean result = l1.equals(l2);
+        System.out.println("Are lengths equal? " + result);
+        return result;
+    }
 
-        System.out.println("Comparing: " + value1 + " " + unit1 +
-                " and " + value2 + " " + unit2 +
-                " → Equal? " + result);
+    // UC5 → Static conversion demo
+    public static Length demonstrateLengthConversion(
+            double value,
+            Length.LengthUnit fromUnit,
+            Length.LengthUnit toUnit) {
+
+        double convertedValue = Length.convert(value, fromUnit, toUnit);
+
+        Length result = new Length(convertedValue, toUnit);
+
+        System.out.println("Converted: " + value + " " + fromUnit +
+                " → " + result);
 
         return result;
     }
 
+    // UC5 → Overloaded conversion
+    public static Length demonstrateLengthConversion(
+            Length length,
+            Length.LengthUnit toUnit) {
+
+        Length converted = length.convertTo(toUnit);
+
+        System.out.println("Converted: " + length + " → " + converted);
+
+        return converted;
+    }
+
     public static void main(String[] args) {
 
-        // Feet ↔ Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.FEET,
-                                    12.0, Length.LengthUnit.INCHES);
+        demonstrateLengthConversion(1.0,
+                Length.LengthUnit.FEET,
+                Length.LengthUnit.INCHES);
 
-        // Yards ↔ Feet
-        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
-                                    3.0, Length.LengthUnit.FEET);
+        demonstrateLengthConversion(3.0,
+                Length.LengthUnit.YARDS,
+                Length.LengthUnit.FEET);
 
-        // Yards ↔ Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
-                                    36.0, Length.LengthUnit.INCHES);
+        demonstrateLengthConversion(36.0,
+                Length.LengthUnit.INCHES,
+                Length.LengthUnit.YARDS);
 
-        // Centimeters ↔ Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETERS,
-                                    0.393701, Length.LengthUnit.INCHES);
-
-        // Centimeters ↔ Feet
-        demonstrateLengthComparison(30.48, Length.LengthUnit.CENTIMETERS,
-                                    1.0, Length.LengthUnit.FEET);
+        Length cm = new Length(30.48, Length.LengthUnit.CENTIMETERS);
+        demonstrateLengthConversion(cm, Length.LengthUnit.FEET);
     }
 }
