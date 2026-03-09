@@ -2,56 +2,63 @@ package com.BridgeLab_Training.quantity_measurement_app;
 
 public class UC1FeetMeasurementEquality {
 
-    // Equality demo
-    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
-        boolean result = l1.equals(l2);
-        System.out.println("Are lengths equal? " + result);
+    public static boolean demonstrateLengthEquality(
+            Length length1,
+            Length length2) {
+
+        boolean result = length1.equals(length2);
+
+        if (result)
+            System.out.println("The two length measurements are equal.");
+        else
+            System.out.println("The two length measurements are not equal.");
+
         return result;
     }
 
-    // UC5 → Static conversion demo
+    public static boolean demonstrateLengthComparison(
+            double value1,
+            Length.LengthUnit unit1,
+            double value2,
+            Length.LengthUnit unit2) {
+
+        Length l1 = new Length(value1, unit1);
+        Length l2 = new Length(value2, unit2);
+
+        return demonstrateLengthEquality(l1, l2);
+    }
+
     public static Length demonstrateLengthConversion(
             double value,
             Length.LengthUnit fromUnit,
             Length.LengthUnit toUnit) {
 
-        double convertedValue = Length.convert(value, fromUnit, toUnit);
-
-        Length result = new Length(convertedValue, toUnit);
-
-        System.out.println("Converted: " + value + " " + fromUnit +
-                " → " + result);
-
-        return result;
+        Length length = new Length(value, fromUnit);
+        return length.convertTo(toUnit);
     }
 
-    // UC5 → Overloaded conversion
     public static Length demonstrateLengthConversion(
             Length length,
             Length.LengthUnit toUnit) {
 
-        Length converted = length.convertTo(toUnit);
+        return length.convertTo(toUnit);
+    }
 
-        System.out.println("Converted: " + length + " → " + converted);
+    // UC6 Addition
+    public static Length demonstrateLengthAddition(
+            Length length1,
+            Length length2) {
 
-        return converted;
+        return length1.add(length2);
     }
 
     public static void main(String[] args) {
 
-        demonstrateLengthConversion(1.0,
-                Length.LengthUnit.FEET,
-                Length.LengthUnit.INCHES);
+        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length l2 = new Length(12.0, Length.LengthUnit.INCHES);
 
-        demonstrateLengthConversion(3.0,
-                Length.LengthUnit.YARDS,
-                Length.LengthUnit.FEET);
+        Length result = demonstrateLengthAddition(l1, l2);
 
-        demonstrateLengthConversion(36.0,
-                Length.LengthUnit.INCHES,
-                Length.LengthUnit.YARDS);
-
-        Length cm = new Length(30.48, Length.LengthUnit.CENTIMETERS);
-        demonstrateLengthConversion(cm, Length.LengthUnit.FEET);
+        System.out.println("Result: " + result);
     }
 }
