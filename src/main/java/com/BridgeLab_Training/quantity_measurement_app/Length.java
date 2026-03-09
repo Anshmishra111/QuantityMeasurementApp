@@ -5,26 +5,6 @@ public class Length {
     private double value;
     private LengthUnit unit;
 
-    // Enum for units
-    public enum LengthUnit {
-
-        FEET(1.0),
-        INCHES(1.0 / 12.0),
-        YARDS(3.0),
-        CENTIMETERS(0.0328084);
-
-        private final double conversionFactor;
-
-        LengthUnit(double conversionFactor) {
-            this.conversionFactor = conversionFactor;
-        }
-
-        public double getConversionFactor() {
-            return conversionFactor;
-        }
-    }
-
-    // Constructor
     public Length(double value, LengthUnit unit) {
 
         if (unit == null)
@@ -45,53 +25,79 @@ public class Length {
         return unit;
     }
 
-    // Convert to base unit (feet)
+    // Convert this value to base unit (inches)
     private double convertToBaseUnit() {
-        return value * unit.getConversionFactor();
+        return unit.convertToBaseUnit(value);
     }
 
-    // Convert from base to target
-    private double convertFromBase(double baseValue, LengthUnit targetUnit) {
-        return baseValue / targetUnit.getConversionFactor();
+    // Convert base unit to target unit
+    private double convertFromBaseToTargetUnit(double baseValue, LengthUnit targetUnit) {
+        return targetUnit.convertFromBaseUnit(baseValue);
     }
 
-    // UC5 conversion
+    // Conversion method
     public Length convertTo(LengthUnit targetUnit) {
 
-        if (targetUnit == null)
-            throw new IllegalArgumentException("Target unit cannot be null");
+        double baseValue = convertToBaseUnit();
 
-        double base = convertToBaseUnit();
-        double result = convertFromBase(base, targetUnit);
+        double convertedValue =
+                convertFromBaseToTargetUnit(baseValue, targetUnit);
 
-        return new Length(result, targetUnit);
+        return new Length(convertedValue, targetUnit);
     }
 
-    // UC6 addition
+    // UC6 Addition
     public Length add(Length thatLength) {
 
         if (thatLength == null)
             throw new IllegalArgumentException("Length cannot be null");
+
+        return addAndConvert(thatLength, this.unit);
+    }
+
+    // UC7 Addition with target unit
+    public Length add(Length thatLength, LengthUnit targetUnit) {
+
+        if (thatLength == null)
+            throw new IllegalArgumentException("Length cannot be null");
+
+        if (targetUnit == null)
+            throw new IllegalArgumentException("Target unit cannot be null");
+
+        return addAndConvert(thatLength, targetUnit);
+    }
+
+    private Length addAndConvert(Length thatLength, LengthUnit targetUnit) {
 
         double thisBase = this.convertToBaseUnit();
         double thatBase = thatLength.convertToBaseUnit();
 
         double sumBase = thisBase + thatBase;
 
-        double result = convertFromBase(sumBase, this.unit);
+        double result =
+                convertFromBaseToTargetUnit(sumBase, targetUnit);
 
-        return new Length(result, this.unit);
+        return new Length(result, targetUnit);
     }
-
-    // Compare helper
+    
     private boolean compare(Length thatLength) {
 
-        double diff = Math.abs(
-                this.convertToBaseUnit()
-                        - thatLength.convertToBaseUnit());
+        double thisBase = this.convertToBaseUnit();
+        double thatBase = thatLength.convertToBaseUnit();
 
-        return diff < 0.0001;
+        double epsilon = 0.0001;
+
+        return Math.abs(thisBase - thatBase) < epsilon;
     }
+
+//    private boolean compare(Length thatLength) {
+//
+//        double diff =
+//                Math.abs(this.convertToBaseUnit()
+//                        - thatLength.convertToBaseUnit());
+//
+//        return diff < 0.0001;
+    
 
     @Override
     public boolean equals(Object o) {

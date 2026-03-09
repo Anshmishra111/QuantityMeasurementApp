@@ -18,9 +18,9 @@ public class UC1FeetMeasurementEquality {
 
     public static boolean demonstrateLengthComparison(
             double value1,
-            Length.LengthUnit unit1,
+            LengthUnit unit1,
             double value2,
-            Length.LengthUnit unit2) {
+            LengthUnit unit2) {
 
         Length l1 = new Length(value1, unit1);
         Length l2 = new Length(value2, unit2);
@@ -30,21 +30,21 @@ public class UC1FeetMeasurementEquality {
 
     public static Length demonstrateLengthConversion(
             double value,
-            Length.LengthUnit fromUnit,
-            Length.LengthUnit toUnit) {
+            LengthUnit fromUnit,
+            LengthUnit toUnit) {
 
         Length length = new Length(value, fromUnit);
+
         return length.convertTo(toUnit);
     }
 
     public static Length demonstrateLengthConversion(
             Length length,
-            Length.LengthUnit toUnit) {
+            LengthUnit toUnit) {
 
         return length.convertTo(toUnit);
     }
 
-    // UC6 Addition
     public static Length demonstrateLengthAddition(
             Length length1,
             Length length2) {
@@ -52,10 +52,18 @@ public class UC1FeetMeasurementEquality {
         return length1.add(length2);
     }
 
+    public static Length demonstrateLengthAddition(
+            Length length1,
+            Length length2,
+            LengthUnit targetUnit) {
+
+        return length1.add(length2, targetUnit);
+    }
+
     public static void main(String[] args) {
 
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(12.0, Length.LengthUnit.INCHES);
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(12.0, LengthUnit.INCHES);
 
         Length result = demonstrateLengthAddition(l1, l2);
 
