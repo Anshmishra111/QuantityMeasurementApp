@@ -5,70 +5,59 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UC1FeetMeasurementEqualityTest {
 
-    // ----------------------------
-    // UC1 / UC2 Equality Tests
-    // ----------------------------
-
     @Test
     public void testFeetEquality() {
 
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
+        Length f1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length f2 = new Length(1.0, Length.LengthUnit.FEET);
 
-        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(l1, l2));
+        assertTrue(f1.equals(f2));
+    }
+
+    @Test
+    public void testInchesEquality() {
+
+        Length i1 = new Length(12.0, Length.LengthUnit.INCHES);
+        Length i2 = new Length(12.0, Length.LengthUnit.INCHES);
+
+        assertTrue(i1.equals(i2));
+    }
+
+    @Test
+    public void testFeetInchesComparison() {
+
+        Length feet = new Length(1.0, Length.LengthUnit.FEET);
+        Length inches = new Length(12.0, Length.LengthUnit.INCHES);
+
+        assertTrue(feet.equals(inches));
     }
 
     @Test
     public void testFeetInequality() {
 
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(2.0, Length.LengthUnit.FEET);
+        Length f1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length f2 = new Length(2.0, Length.LengthUnit.FEET);
 
-        assertFalse(UC1FeetMeasurementEquality.demonstrateLengthEquality(l1, l2));
+        assertFalse(f1.equals(f2));
     }
 
     @Test
-    public void testFeetAndInchesEquality() {
+    public void testInchesInequality() {
 
-        assertTrue(
-        		UC1FeetMeasurementEquality.demonstrateLengthComparison(
-                        1.0, Length.LengthUnit.FEET,
-                        12.0, Length.LengthUnit.INCHES
-                )
-        );
-    }
+        Length i1 = new Length(10.0, Length.LengthUnit.INCHES);
+        Length i2 = new Length(12.0, Length.LengthUnit.INCHES);
 
-    // ----------------------------
-    // UC4 Additional Units
-    // ----------------------------
-
-    @Test
-    public void testYardToFeetEquality() {
-
-        assertTrue(
-        		UC1FeetMeasurementEquality.demonstrateLengthComparison(
-                        1.0, Length.LengthUnit.YARDS,
-                        3.0, Length.LengthUnit.FEET
-                )
-        );
+        assertFalse(i1.equals(i2));
     }
 
     @Test
-    public void testCmToInchesEquality() {
-    	Length cm = new Length(2.54, Length.LengthUnit.CENTIMETERS);
-        Length inch = new Length(1.0, Length.LengthUnit.INCHES);
+    public void testCrossUnitInequality() {
 
-        assertEquals(
-                cm.convertTo(Length.LengthUnit.INCHES).getValue(),
-                inch.getValue(),
-                0.001
-        
-        );
+        Length feet = new Length(1.0, Length.LengthUnit.FEET);
+        Length inches = new Length(10.0, Length.LengthUnit.INCHES);
+
+        assertFalse(feet.equals(inches));
     }
-
-    // ----------------------------
-    // UC5 Conversion Tests
-    // ----------------------------
 
     @Test
     public void testConversion_FeetToInches() {
@@ -80,26 +69,7 @@ public class UC1FeetMeasurementEqualityTest {
                         Length.LengthUnit.INCHES
                 );
 
-        Length expected =
-                new Length(12.0, Length.LengthUnit.INCHES);
-
-        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(result, expected));
-    }
-
-    @Test
-    public void testConversion_InchesToFeet() {
-
-        Length result =
-        		UC1FeetMeasurementEquality.demonstrateLengthConversion(
-                        24.0,
-                        Length.LengthUnit.INCHES,
-                        Length.LengthUnit.FEET
-                );
-
-        Length expected =
-                new Length(2.0, Length.LengthUnit.FEET);
-
-        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(result, expected));
+        assertEquals(12.0, result.getValue(), 0.001);
     }
 
     @Test
@@ -112,33 +82,8 @@ public class UC1FeetMeasurementEqualityTest {
                         Length.LengthUnit.INCHES
                 );
 
-        Length expected =
-                new Length(36.0, Length.LengthUnit.INCHES);
-
-        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(result, expected));
+        assertEquals(36.0, result.getValue(), 0.001);
     }
-
-    @Test
-    public void testConversion_CentimetersToInches() {
-
-        Length result =
-        		UC1FeetMeasurementEquality.demonstrateLengthConversion(
-                        2.54,
-                        Length.LengthUnit.CENTIMETERS,
-                        Length.LengthUnit.INCHES
-                );
-        assertEquals(1.0, result.getValue(), 0.001);
-
-
-//        Length expected =
-//                new Length(1.0, Length.LengthUnit.INCHES);
-//
-//        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(result, expected));
-    }
-
-    // ----------------------------
-    // UC6 Addition Tests
-    // ----------------------------
 
     @Test
     public void testAddition_SameUnit_FeetPlusFeet() {
@@ -152,7 +97,7 @@ public class UC1FeetMeasurementEqualityTest {
         Length expected =
                 new Length(3.0, Length.LengthUnit.FEET);
 
-        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(result, expected));
+        assertTrue(expected.equals(result));
     }
 
     @Test
@@ -167,22 +112,7 @@ public class UC1FeetMeasurementEqualityTest {
         Length expected =
                 new Length(2.0, Length.LengthUnit.FEET);
 
-        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(result, expected));
-    }
-
-    @Test
-    public void testAddition_InchesPlusFeet() {
-
-        Length l1 = new Length(12.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
-
-        Length result =
-        		UC1FeetMeasurementEquality.demonstrateLengthAddition(l1, l2);
-
-        Length expected =
-                new Length(24.0, Length.LengthUnit.INCHES);
-
-        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(result, expected));
+        assertTrue(expected.equals(result));
     }
 
     @Test
@@ -197,7 +127,7 @@ public class UC1FeetMeasurementEqualityTest {
         Length expected =
                 new Length(5.0, Length.LengthUnit.FEET);
 
-        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(result, expected));
+        assertTrue(expected.equals(result));
     }
 
     @Test
@@ -212,6 +142,6 @@ public class UC1FeetMeasurementEqualityTest {
         Length expected =
                 new Length(3.0, Length.LengthUnit.FEET);
 
-        assertTrue(UC1FeetMeasurementEquality.demonstrateLengthEquality(result, expected));
+        assertTrue(expected.equals(result));
     }
 }

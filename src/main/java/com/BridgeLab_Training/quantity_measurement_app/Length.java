@@ -5,6 +5,7 @@ public class Length {
     private double value;
     private LengthUnit unit;
 
+    // Enum for units
     public enum LengthUnit {
 
         FEET(1.0),
@@ -23,6 +24,7 @@ public class Length {
         }
     }
 
+    // Constructor
     public Length(double value, LengthUnit unit) {
 
         if (unit == null)
@@ -48,12 +50,12 @@ public class Length {
         return value * unit.getConversionFactor();
     }
 
-    // Convert from base unit to target unit
+    // Convert from base to target
     private double convertFromBase(double baseValue, LengthUnit targetUnit) {
         return baseValue / targetUnit.getConversionFactor();
     }
 
-    // UC5 Conversion
+    // UC5 conversion
     public Length convertTo(LengthUnit targetUnit) {
 
         if (targetUnit == null)
@@ -65,7 +67,7 @@ public class Length {
         return new Length(result, targetUnit);
     }
 
-    // UC6 Addition
+    // UC6 addition
     public Length add(Length thatLength) {
 
         if (thatLength == null)
@@ -83,9 +85,12 @@ public class Length {
 
     // Compare helper
     private boolean compare(Length thatLength) {
-        return Double.compare(
-                this.convertToBaseUnit(),
-                thatLength.convertToBaseUnit()) == 0;
+
+        double diff = Math.abs(
+                this.convertToBaseUnit()
+                        - thatLength.convertToBaseUnit());
+
+        return diff < 0.0001;
     }
 
     @Override
@@ -103,6 +108,6 @@ public class Length {
 
     @Override
     public String toString() {
-        return String.format("%.2f %s", value, unit);
+        return value + " " + unit;
     }
 }
