@@ -1,6 +1,6 @@
 /target/
-/.mvn/
-/.settings/
-/.project/
-/.classpath/
-
+.mvn/
+.idea
+.settings/
+.classpath
+.projectgi
