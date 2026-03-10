@@ -1,6 +1,6 @@
 package com.BridgeLab_Training.quantity_measurement_app;
 
-public enum LengthUnit {
+public enum LengthUnit implements IMeasurable {
 
     FEET(12.0),
     INCHES(1.0),
@@ -13,17 +13,23 @@ public enum LengthUnit {
         this.conversionFactor = conversionFactor;
     }
 
+    @Override
     public double getConversionFactor() {
         return conversionFactor;
     }
 
-    // Convert value from this unit to base unit (inches)
+    @Override
     public double convertToBaseUnit(double value) {
         return value * conversionFactor;
     }
 
-    // Convert value from base unit (inches) to this unit
+    @Override
     public double convertFromBaseUnit(double baseValue) {
         return baseValue / conversionFactor;
+    }
+
+    @Override
+    public String getUnitName() {
+        return this.name();
     }
 }
