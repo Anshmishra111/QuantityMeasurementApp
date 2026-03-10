@@ -1,6 +1,6 @@
 /target/
-.mvn/
-.settings/
-.project/
-.classpath/
+/.mvn/
+/.settings/
+/.project/
+/.classpath/
 
