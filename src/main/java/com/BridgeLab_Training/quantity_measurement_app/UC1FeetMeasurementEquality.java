@@ -4,91 +4,105 @@ public class UC1FeetMeasurementEquality {
 
     public static void main(String[] args) {
 
-        System.out.println("===== Quantity Measurement Application (UC13) =====");
+        System.out.println("===== Quantity Measurement Application =====");
 
-        // ---------------- LENGTH DEMO ----------------
+        //  LENGTH DEMO 
         System.out.println("\n--- Length Operations ---");
 
-        Quantity<LengthUnit> length1 = new Quantity<>(10.0, LengthUnit.FEET);
-        Quantity<LengthUnit> length2 = new Quantity<>(12.0, LengthUnit.INCHES);
+        Quantity<LengthUnit> length1 =
+                new Quantity<>(10.0, LengthUnit.FEET);
 
-        // Equality
-        System.out.println("Equality (10 feet == 120 inches): "
-                + length1.equals(new Quantity<>(120.0, LengthUnit.INCHES)));
+        Quantity<LengthUnit> length2 =
+                new Quantity<>(120.0, LengthUnit.INCHES);
 
-        // Conversion
-        Quantity<LengthUnit> lengthConverted = length1.convertTo(LengthUnit.INCHES);
-        System.out.println("10 feet in inches: " + lengthConverted);
+        System.out.println("10 feet == 120 inches: " + length1.equals(length2));
 
-        // Addition
-        Quantity<LengthUnit> lengthAdd = length1.add(length2);
-        System.out.println("Addition (10 ft + 12 in): " + lengthAdd);
+        Quantity<LengthUnit> convertedLength =
+                length1.convertTo(LengthUnit.INCHES);
 
-        // Subtraction
-        Quantity<LengthUnit> lengthSub = length1.subtract(length2);
-        System.out.println("Subtraction (10 ft - 12 in): " + lengthSub);
+        System.out.println("10 feet in inches: " + convertedLength);
 
-        // Division
-        double lengthDiv = length1.divide(new Quantity<>(2.0, LengthUnit.FEET));
-        System.out.println("Division (10 ft / 2 ft): " + lengthDiv);
+        Quantity<LengthUnit> lengthAdd =
+                length1.add(new Quantity<>(12.0, LengthUnit.INCHES));
+
+        System.out.println("10 feet + 12 inches: " + lengthAdd);
 
 
 
-        // ---------------- WEIGHT DEMO ----------------
+        //  WEIGHT DEMO 
         System.out.println("\n--- Weight Operations ---");
 
-        Quantity<WeightUnit> weight1 = new Quantity<>(10.0, WeightUnit.KILOGRAM);
-        Quantity<WeightUnit> weight2 = new Quantity<>(5000.0, WeightUnit.GRAM);
+        Quantity<WeightUnit> weight1 =
+                new Quantity<>(1.0, WeightUnit.KILOGRAM);
 
-        // Equality
-        System.out.println("Equality (1 kg == 1000 g): "
-                + new Quantity<>(1.0, WeightUnit.KILOGRAM)
-                .equals(new Quantity<>(1000.0, WeightUnit.GRAM)));
+        Quantity<WeightUnit> weight2 =
+                new Quantity<>(1000.0, WeightUnit.GRAM);
 
-        // Conversion
-        Quantity<WeightUnit> weightConverted = weight1.convertTo(WeightUnit.GRAM);
-        System.out.println("10 kg in grams: " + weightConverted);
+        System.out.println("1 kg == 1000 g: " + weight1.equals(weight2));
 
-        // Addition
-        Quantity<WeightUnit> weightAdd = weight1.add(weight2);
-        System.out.println("Addition (10 kg + 5000 g): " + weightAdd);
+        Quantity<WeightUnit> convertedWeight =
+                weight1.convertTo(WeightUnit.GRAM);
 
-        // Subtraction
-        Quantity<WeightUnit> weightSub = weight1.subtract(weight2);
-        System.out.println("Subtraction (10 kg - 5000 g): " + weightSub);
+        System.out.println("1 kg in grams: " + convertedWeight);
 
-        // Division
-        double weightDiv = weight1.divide(new Quantity<>(5.0, WeightUnit.KILOGRAM));
-        System.out.println("Division (10 kg / 5 kg): " + weightDiv);
+        Quantity<WeightUnit> weightAdd =
+                weight1.add(new Quantity<>(500.0, WeightUnit.GRAM));
+
+        System.out.println("1 kg + 500 g: " + weightAdd);
 
 
 
-        // ---------------- VOLUME DEMO ----------------
+        //  VOLUME DEMO 
         System.out.println("\n--- Volume Operations ---");
 
-        Quantity<VolumeUnit> volume1 = new Quantity<>(1.0, VolumeUnit.LITRE);
-        Quantity<VolumeUnit> volume2 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+        Quantity<VolumeUnit> volume1 =
+                new Quantity<>(1.0, VolumeUnit.LITRE);
 
-        // Equality
-        System.out.println("Equality (1 L == 1000 mL): "
-                + volume1.equals(volume2));
+        Quantity<VolumeUnit> volume2 =
+                new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 
-        // Conversion
-        Quantity<VolumeUnit> volumeConverted = volume1.convertTo(VolumeUnit.MILLILITRE);
-        System.out.println("1 L in mL: " + volumeConverted);
+        System.out.println("1 L == 1000 mL: " + volume1.equals(volume2));
 
-        // Addition
-        Quantity<VolumeUnit> volumeAdd = volume1.add(volume2);
-        System.out.println("Addition (1 L + 1000 mL): " + volumeAdd);
+        Quantity<VolumeUnit> convertedVolume =
+                volume1.convertTo(VolumeUnit.MILLILITRE);
 
-        // Subtraction
-        Quantity<VolumeUnit> volumeSub = volume1.subtract(volume2);
-        System.out.println("Subtraction (1 L - 1000 mL): " + volumeSub);
+        System.out.println("1 L in mL: " + convertedVolume);
 
-        // Division
-        double volumeDiv = volume1.divide(new Quantity<>(0.5, VolumeUnit.LITRE));
-        System.out.println("Division (1 L / 0.5 L): " + volumeDiv);
+        Quantity<VolumeUnit> volumeAdd =
+                volume1.add(new Quantity<>(500.0, VolumeUnit.MILLILITRE));
 
-        System.out.println("\n===== Application Completed Successfully =====");
+        System.out.println("1 L + 500 mL: " + volumeAdd);
+
+
+
+        // ---------------- TEMPERATURE DEMO ----------------
+        System.out.println("\n--- Temperature Operations ---");
+
+        Quantity<TemperatureUnit> temp1 =
+                new Quantity<>(0.0, TemperatureUnit.CELSIUS);
+
+        Quantity<TemperatureUnit> temp2 =
+                new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT);
+
+        System.out.println("0°C == 32°F: " + temp1.equals(temp2));
+
+        Quantity<TemperatureUnit> boiling =
+                new Quantity<>(100.0, TemperatureUnit.CELSIUS);
+
+        Quantity<TemperatureUnit> fahrenheit =
+                boiling.convertTo(TemperatureUnit.FAHRENHEIT);
+
+        System.out.println("100°C = " + fahrenheit.getValue() + "°F");
+
+
+        // Unsupported Arithmetic Example
+        try {
+            temp1.add(new Quantity<>(10.0, TemperatureUnit.CELSIUS));
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Temperature arithmetic not supported: "
+                    + e.getMessage());
+        }
+
+        System.out.println("\n===== Application Completed =====");
     }
 }
