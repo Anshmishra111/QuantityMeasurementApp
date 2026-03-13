@@ -1,4 +1,6 @@
-package com.BridgeLab_Training.quantity_measurement_app;
+package com.BridgeLab_Training.quantity_measurement_app.model;
+
+import com.BridgeLab_Training.quantity_measurement_app.enums.LengthUnit;
 
 public class Length {
 
