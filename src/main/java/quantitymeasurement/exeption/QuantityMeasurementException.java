@@ -1,5 +1,7 @@
 package quantitymeasurement.exeption;
 
+import quantitymeasurement.exeption.QuantityMeasurementException;
+
 public class QuantityMeasurementException extends RuntimeException {
 
     // Constructor with message

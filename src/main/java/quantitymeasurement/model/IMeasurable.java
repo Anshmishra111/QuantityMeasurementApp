@@ -1,5 +1,8 @@
 package quantitymeasurement.model;
 
+import quantitymeasurement.model.IMeasurable;
+import quantitymeasurement.model.SupportsArithmetic;
+
 @FunctionalInterface
 interface SupportsArithmetic{
     boolean isSupported();
