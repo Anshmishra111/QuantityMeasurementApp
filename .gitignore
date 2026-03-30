@@ -1,7 +1,2 @@
-/target/
-.mvn/
-.idea
-.settings/
-.classpath
-.project
 /bin/
+/target/
