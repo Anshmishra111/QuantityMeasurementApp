@@ -1,134 +1,201 @@
-# Quantity Measurement Application
+# Quantity Measurement App
+
+This log documents the daily progress of tasks completed during the Quantity Measurement App development, identifying work done on each date with thematic headings and detailed summaries.
 
 ---
 
-## Description  
-A Java-based application that demonstrates progressively advanced object-oriented design patterns through a series of use cases covering measurement equality, unit conversion, and arithmetic operations across multiple measurement categories (length, weight, volume).
+## Folder Structure
 
----
+The repository is organized in a modular way following the standard Maven directory structure.
 
-## Project Structure
+Currently, the application code resides in the `src/main/java` directory, and the test code resides in the `src/test/java` directory.
 
 ```
-├── QunatityMeasurementApp/            (Repository Name and Project Name)
-│   │
-│   ├── main      (default branch)
-│   ├── dev       (Branch Name)
-│   ├── feature/UC1-FeetEquality
-│   ├── feature/UC2-InchEquality
-│   ├── feature/UC3-GenericLength
-│   ├── feature/UC4-ExtendedUnitSupport
-│   ├── feature/UC5-UnitConversion
-│   ├── feature/UC6-UnitAddition
-│   ├── feature/UC7-TargetUnitAddition
-│   ├── feature/UC8-StandaloneUnit
-│   ├── feature/UC9-WeightMeasurement
-│   ├── feature/UC10-Generic-Quantity-Class-with-Unit-Interface-For-Multi-Category-Support
-│   ├── feature/UC11-Volume-Measurement-Equality
-│   ├── feature/UC12-Subtraction-and-Division-Operations
-│   ├── feature/UC13-Centralized-Arithmetic-Logic
-│   ├── feature/UC14-Temperature-Measurement
-│   ├── feature/UC15-N-Tier
+QuantityMeasurementApp/
+|
++-- src/
+|   +-- main/
+|   |   +-- java/com/app/quantitymeasurement/
+|   |   |   +-- controller/        (REST Controllers)
+|   |   |   +-- core/              (Quantity<U> generic class)
+|   |   |   +-- dto/               (Request & Response DTOs)
+|   |   |   +-- entity/            (JPA Entities)
+|   |   |   +-- exeption/          (Global Exception Handler)
+|   |   |   +-- model/             (Unit Enums & IMeasurable)
+|   |   |   +-- repository/        (Spring Data JPA Repository)
+|   |   |   +-- security/          (JWT & Security Config)
+|   |   |   +-- service/           (Service Interface & Impl)
+|   |   |   +-- Application.java   (Spring Boot Entry Point)
+|   |   +-- resources/
+|   |       +-- application.properties
+|   +-- test/
+|       +-- java/com/app/quantitymeasurement/
+|           +-- controller/        (MockMvc Controller Tests)
+|           +-- ApplicationTests.java  (Full Integration Tests)
+|
++-- data/
+|   +-- quantitydb.mv.db           (H2 File-Based Database)
+|
++-- pom.xml                        (Maven Configuration)
++-- README.md
 ```
 
 ---
-## Use Cases
 
-### UC1 – Feet Measurement Equality
-Introduces the `Feet` inner class with a proper `equals()` override using `Double.compare()` for floating-point safety.
+## Week 1: Core Quantity System — TDD Approach & Unit Conversion
 
-**Concepts:** Object equality, floating-point comparison, null checking, type safety.
+### 18-Feb-2026 (Wednesday): Feet & Inches Equality — UC1 & UC2
 
----
-
-### UC2 – Feet and Inches Measurement Equality
-Extends UC1 by adding a separate `Inches` class. Highlights the DRY violation of maintaining two nearly identical classes.
-
-**Concepts:** Same as UC1, applied to a second unit type.
+Created the repository and set up the project structure. Started implementing the Quantity Measurement System using Test Driven Development (TDD). Addressed **UC1** (Feet Equality) to handle feet measurement comparisons using a dedicated `Feet` class with equality logic. Extended functionality to support **UC2** (Inches Equality), allowing comparison of inch values. Both units achieved 100% test coverage at this stage.
 
 ---
 
-### UC3 – Generic Quantity Class (DRY Principle)
-Refactors `Feet` and `Inches` into a single `QuantityLength` class backed by a `LengthUnit` enum with conversion factors.
+### 19-Feb-2026 (Thursday): Generic Quantity Class, Yards & Centimeters — UC3 & UC4
 
-**Concepts:** DRY principle, enum usage, unit abstraction, cross-unit equality (1 foot = 12 inches).
-
----
-
-### UC4 – Extended Unit Support (Yards & Centimeters)
-Adds `YARDS` and `CENTIMETERS` to the `LengthUnit` enum. No changes to `QuantityLength` are needed, validating the scalable design.
-
-**Conversions:**
-- 1 yard = 3 feet = 36 inches
-- 1 cm = 0.393701 inches
+Refactored the code to eliminate duplication by introducing a generic `Quantity` class and a `LengthUnit` enum (**UC3**), applying the DRY principle. The enum encapsulates each unit's conversion factor to the base unit (inches). Extended the system to support `YARDS` and `CENTIMETERS` (**UC4**) with comprehensive test coverage for cross-unit comparisons such as 1 YARD == 3 FEET and 2 INCHES == 5.08 CENTIMETERS.
 
 ---
 
-### UC5 – Unit-to-Unit Conversion
-Exposes a `convert(value, sourceUnit, targetUnit)` method. Normalizes values through the base unit (feet) before converting to the target unit.
+### 23-Feb-2026 (Monday): Unit-to-Unit Conversion — UC5
 
-**Concepts:** Base unit normalization, bidirectional conversion, method design, API usability.
-
----
-
-### UC6 – Addition of Two Length Units
-Adds two `QuantityLength` objects of potentially different units. The result is expressed in the unit of the first operand.
-
-**Concepts:** Arithmetic on value objects, immutability, unit conversion reuse, commutativity.
+Implemented unit-to-unit conversions between different length units (**UC5**). Added `convert()` and `convertTo()` methods to the `Quantity` class. Conversion logic centralizes on converting the source value to the base unit (inches) first and then converting out to the target unit. Ensured robust input validation (null unit, non-finite value) and floating-point precision compatibility across comprehensive test cases.
 
 ---
 
-### UC7 – Addition with Explicit Target Unit
-Extends UC6 by allowing the caller to specify any supported unit for the result.
+## Week 2: Arithmetic, Categories & Architecture
 
-**Concepts:** Method overloading, explicit parameter passing, functional approach.
+### 09-Mar-2026 (Monday): Addition, Weight Category & Generic Bounds — UC6 to UC10
 
----
+Expanded system capabilities significantly across five use cases:
 
-### UC8 – Standalone LengthUnit Enum with Conversion Responsibility
-Extracts `LengthUnit` from inside `QuantityLength` into a standalone top-level class. Assigns conversion responsibility (`convertToBaseUnit`, `convertFromBaseUnit`) to the enum itself.
-
-**Concepts:** SRP, separation of concerns, dependency inversion, circular dependency elimination.
-
----
-
-### UC9 – Weight Measurement (Kilogram, Gram, Pound)
-Introduces `WeightUnit` and `QuantityWeight`, mirroring the length design. Demonstrates support for a second, independent measurement category.
-
-**Conversions:**
-- 1 kg = 1000 g
-- 1 lb ≈ 0.453592 kg
-
-**Concepts:** Multi-category support, category type safety, equals/hashCode contract.
+- **UC6** — Added `add()` method to `Quantity` to sum two length quantities, returning the result in the unit of the first operand.
+- **UC7** — Extended `add()` to accept an explicit `targetUnit` parameter, allowing the result to be expressed in any compatible unit.
+- **UC8** — Refactored `LengthUnit` to implement the `IMeasurable` interface, improving entity cohesion and preparing for multi-category support.
+- **UC9** — Introduced the `WeightUnit` category (`MILLIGRAM`, `GRAM`, `KILOGRAM`, `POUND`, `TONNE`) with gram as the base unit, following the same `IMeasurable` contract.
+- **UC10** — Refactored the entire architecture to a fully generic `Quantity<U extends IMeasurable>` class, eliminating categorical duplication and enabling any unit type to participate in the same arithmetic and conversion pipeline.
 
 ---
 
-### UC10 – Generic Quantity Class with IMeasurable Interface
-Eliminates the duplication between `QuantityLength` and `QuantityWeight` by introducing:
-- `IMeasurable` interface for all unit enums
-- Generic `Quantity<U extends IMeasurable>` class replacing all category-specific Quantity classes
-- Simplified `QuantityMeasurementApp` with generic demonstration methods
+### 10-Mar-2026 (Tuesday): Volume, Subtraction, Division & Temperature — UC11 to UC14
 
-**Concepts:** Generic programming, bounded type parameters, interface-based design, OCP, LSP, composition over inheritance.
+Extended capabilities across four further use cases:
+
+- **UC11** — Added the `VolumeUnit` category (`LITRE`, `MILLILITRE`, `GALLON`) with litre as the base unit.
+- **UC12** — Added `subtract()` and `divide()` methods. Subtraction returns a `Quantity<U>` in the target unit; division returns a raw `double` ratio.
+- **UC13** — Refactored all arithmetic logic into a centralized `ArithmeticOperation` private enum inside `Quantity`, with `ADD`, `SUBTRACT`, and `Divide` variants each implementing a shared `compute(double, double)` method. This maintains the DRY principle across all operations.
+- **UC14** — Added `TemperatureUnit` (`CELSIUS`, `FAHRENHEIT`, `KELVIN`) with non-linear conversion formulas (not a simple multiplication factor). Introduced a `supportArithmetic()` method inside `IMeasurable` (default: `true`) overridden to `false` in `TemperatureUnit`, cleanly disabling add/subtract/divide for temperature while keeping compare and convert fully functional.
+
+---
+
+### 12-Mar-2026 (Thursday): N-Tier Architecture — UC15
+
+Refactored the application to a proper **N-Tier Architecture** by introducing distinct Controller, Service, Repository, and DTO layers:
+
+- `QuantityMeasurementController` — drives application flow and delegates to the service.
+- `IQuantityMeasurementService` — defines the service contract (compare, convert, add, subtract, divide).
+- `QuantityDTO` — acts as the data transfer object between layers, decoupling the API surface from internal models.
+- An in-memory `List`-based repository was introduced at this stage to simulate persistence.
+
+This separation of concerns significantly improves maintainability and scalability.
 
 ---
 
-### UC11 – Volume Measurement (Litre, Millilitre, Gallon)
-Adds a `VolumeUnit` enum implementing `IMeasurable`. No changes to `Quantity<U>` or `QuantityMeasurementApp` are required, validating true architectural scalability.
+### 13-Mar-2026 (Friday): JDBC Database Persistence — UC16
 
-**Conversions:**
-- 1 L = 1000 mL
-- 1 gallon ≈ 3.78541 L
-
-**Concepts:** Scalability validation, DRY at scale, pattern replication across categories.
----
-
-### UC12 – Subtraction and Division Operations on Quantity Measurements
-Adds a Subtraction and Division method in the Quantity class to validate the subtraction and Division
-
-**Conversions:**
-- 1 L = 1000 mL
-- 1000ml = 1L
-- 1 gallon ≈ 3.78541 L
+Integrated a **JDBC Database Repository** to persist all quantity measurement operations. Replaced the in-memory repository with a `QuantityMeasurementDatabaseRepository` backed by a real SQL database. Introduced a `ConnectionPool` for efficient connection management and an `ApplicationConfig` class for centralized JDBC configuration (driver, URL, credentials). All five operations — compare, convert, add, subtract, divide — are now saved to and retrieved from the database, enabling operation history to survive application restarts.
 
 ---
+
+## Week 3: Spring Boot, REST API & Security
+
+### 17-Mar-2026 (Tuesday): Spring Boot REST Service & Spring Data JPA — UC17
+
+Migrated the application to a full **Spring Boot REST Service** by leveraging the Spring Framework ecosystem:
+
+- Replaced raw JDBC with **Spring Data JPA** backed by an **H2 file-based database** (`./data/quantitydb`). The `IQuantityMeasurementRepository` extends `JpaRepository` and provides custom query methods (`findByOperation`, `findByThisMeasurementType`, `findByIsError`, `countByOperationAndIsErrorFalse`).
+- Exposed all operations as **RESTful HTTP endpoints** via `QuantityMeasurementController` mapped to `/api/measurements/`.
+- Added three additional history and reporting GET endpoints: `/history/type/{type}`, `/history/errored`, and `/count/{operation}`.
+- Introduced `QuantityMeasurementDTO` and `QuantityMeasurementEntity` to cleanly decouple the REST layer from the JPA persistence layer. Every operation — including failures — is saved as a `QuantityMeasurementEntity` row with timestamps (`createdAt`, `updatedAt`) auto-managed via `@PrePersist` and `@PreUpdate`.
+- Configured **Spring Security** with a `SecurityFilterChain` (CSRF disabled, stateless session).
+- Added centralized exception handling via `@RestControllerAdvice` (`GlobalExceptionHandler`) covering `@Valid` failures (400), domain errors (400), unsupported operations (400), unmapped paths (404), and all unhandled exceptions (500).
+- Integrated **Swagger / OpenAPI** (`springdoc-openapi 2.5.0`) for interactive API documentation, accessible at `/swagger-ui.html` without authentication.
+- Wrote **MockMvc controller-layer unit tests** (`@WebMvcTest` + `@MockBean`) and **full integration tests** (`@SpringBootTest(RANDOM_PORT)` + `TestRestTemplate`) covering all endpoints. All tests pass.
+
+---
+
+### 30-Mar-2026 (Monday): JWT Authentication — UC18
+
+Integrated **JWT (JSON Web Token)** authentication to secure all REST API measurement endpoints:
+
+- Implemented `AuthController` with `/auth/signup` and `/auth/login` endpoints. Signup encodes the password with `BCryptPasswordEncoder` and saves the user to an H2-backed `users` table via `UserRepository`. Login validates credentials and returns a signed JWT token.
+- Added a `JwtFilter` (extends `OncePerRequestFilter`) that intercepts every request, extracts the `Authorization: Bearer <token>` header, validates the token using `JwtUtil`, and sets the `SecurityContext` when valid.
+- Configured `SecurityConfig` (`@Profile("!test")`) to permit `/auth/**`, `/swagger-ui/**`, `/api-docs/**`, and `/h2-console/**` while requiring authentication for all `/api/measurements/**` endpoints.
+- Configured full **CORS support** allowing all origins, standard HTTP methods (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`), and required headers including `Authorization`, with a 1-hour preflight cache.
+- Fixed a duplicate username bug on signup: previously caused an unhandled DB constraint violation (HTTP 500); now returns a descriptive HTTP 400 response before attempting to save.
+- Fixed invalid login handling: previously threw a `RuntimeException` that surfaced as HTTP 500; now returns HTTP 401 with a clear error message.
+- JWT tokens are signed with **HMAC-SHA256** and expire after **1 hour**.
+
+---
+
+## API Reference
+
+### Authentication Endpoints (Public)
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/auth/signup` | Register a new user |
+| POST | `/auth/login` | Login and receive a JWT token |
+
+### Measurement Endpoints (Require `Authorization: Bearer <token>`)
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/measurements/compare` | Compare two quantities |
+| POST | `/api/measurements/convert` | Convert a quantity to another unit |
+| POST | `/api/measurements/add` | Add two quantities |
+| POST | `/api/measurements/subtract` | Subtract two quantities |
+| POST | `/api/measurements/divide` | Divide two quantities (returns scalar) |
+| GET | `/api/measurements/history` | All operation records |
+| GET | `/api/measurements/history/{operation}` | Filter by operation type |
+| GET | `/api/measurements/history/type/{type}` | Filter by measurement type |
+| GET | `/api/measurements/history/errored` | All error records |
+| GET | `/api/measurements/count/{operation}` | Count of successful operations |
+
+### Supported Units
+
+| Category | Units | Base Unit | Arithmetic |
+|---|---|---|---|
+| `LengthUnit` | `FEET`, `INCHES`, `YARDS`, `CENTIMETERS` | Inches | Supported |
+| `WeightUnit` | `MILLIGRAM`, `GRAM`, `KILOGRAM`, `POUND`, `TONNE` | Gram | Supported |
+| `VolumeUnit` | `LITRE`, `MILLILITRE`, `GALLON` | Litre | Supported |
+| `TemperatureUnit` | `CELSIUS`, `FAHRENHEIT`, `KELVIN` | Celsius | Not Supported |
+
+---
+
+## Running the Application
+
+**Prerequisites:** Java 17, Maven 3.6+
+
+```bash
+cd quantity-measurement-app
+./mvnw spring-boot:run
+```
+
+### Running Tests
+
+```bash
+./mvnw test
+```
+
+---
+
+## Useful URLs
+
+| URL | Description |
+|---|---|
+| `http://localhost:8080/swagger-ui.html` | Swagger UI — interactive API docs |
+| `http://localhost:8080/api-docs` | Raw OpenAPI JSON |
+| `http://localhost:8080/h2-console` | H2 database browser |
+| `http://localhost:8080/actuator/health` | Application health check |
+
+> H2 Console — JDBC URL: `jdbc:h2:file:./data/quantitydb` · User: `sa` · Password: *(blank)*
