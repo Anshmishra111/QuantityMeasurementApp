@@ -1,0 +1,10 @@
+com\app\historyservice\security\JwtFilter.class
+com\app\historyservice\controller\HistoryController.class
+com\app\historyservice\entity\QuantityMeasurementEntity.class
+com\app\historyservice\dto\QuantityMeasurementDTO.class
+com\app\historyservice\repository\IHistoryRepository.class
+com\app\historyservice\security\JwtUtil.class
+com\app\historyservice\security\SecurityConfig.class
+com\app\historyservice\service\HistoryServiceImpl.class
+com\app\historyservice\HistoryServiceApplication.class
+com\app\historyservice\service\IHistoryService.class
