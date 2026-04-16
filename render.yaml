@@ -1,7 +1,7 @@
 services:
   # ── API Gateway ──────────────────────────────────────────────────────────────
   - type: web
-    name: api-gateway
+    name: quantity-measurement-app
     env: docker
     plan: free
     dockerContext: .
