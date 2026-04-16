@@ -5,12 +5,11 @@ services:
     env: docker
     plan: free
     dockerContext: .
-    dockerfile: Dockerfile
-    dockerBuildArgs:
-      - key: SERVICE_NAME
-        value: api-gateway
+    dockerfilePath: Dockerfile
     healthCheckPath: /actuator/health
     envVars:
+      - key: SERVICE_NAME
+        value: api-gateway
       - key: AUTH_SERVICE_URL
         sync: false
       - key: MEASUREMENT_SERVICE_URL
@@ -26,12 +25,11 @@ services:
     env: docker
     plan: free
     dockerContext: .
-    dockerfile: Dockerfile
-    dockerBuildArgs:
-      - key: SERVICE_NAME
-        value: auth-service
+    dockerfilePath: Dockerfile
     healthCheckPath: /actuator/health
     envVars:
+      - key: SERVICE_NAME
+        value: auth-service
       - key: DB_URL
         sync: false
       - key: DB_USERNAME
@@ -47,12 +45,11 @@ services:
     env: docker
     plan: free
     dockerContext: .
-    dockerfile: Dockerfile
-    dockerBuildArgs:
-      - key: SERVICE_NAME
-        value: measurement-service
+    dockerfilePath: Dockerfile
     healthCheckPath: /actuator/health
     envVars:
+      - key: SERVICE_NAME
+        value: measurement-service
       - key: DB_URL
         sync: false
       - key: DB_USERNAME
@@ -68,12 +65,11 @@ services:
     env: docker
     plan: free
     dockerContext: .
-    dockerfile: Dockerfile
-    dockerBuildArgs:
-      - key: SERVICE_NAME
-        value: history-service
+    dockerfilePath: Dockerfile
     healthCheckPath: /actuator/health
     envVars:
+      - key: SERVICE_NAME
+        value: history-service
       - key: DB_URL
         sync: false
       - key: DB_USERNAME
