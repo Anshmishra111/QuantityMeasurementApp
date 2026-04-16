@@ -2,69 +2,83 @@ services:
   # ── API Gateway ──────────────────────────────────────────────────────────────
   - type: web
     name: api-gateway
-    env: java
+    env: docker
     plan: free
-    buildCommand: mvn -pl api-gateway -am package -DskipTests -q
-    startCommand: java -jar api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar
+    dockerContext: .
+    dockerfile: Dockerfile
+    dockerBuildArgs:
+      - key: SERVICE_NAME
+        value: api-gateway
     healthCheckPath: /actuator/health
     envVars:
       - key: AUTH_SERVICE_URL
-        sync: false          # set manually in Render dashboard after auth-service is deployed
+        sync: false
       - key: MEASUREMENT_SERVICE_URL
         sync: false
       - key: HISTORY_SERVICE_URL
         sync: false
       - key: FRONTEND_URL
-        value: "*"           # update this to your Angular frontend URL once deployed
+        value: "*"
 
   # ── Auth Service ─────────────────────────────────────────────────────────────
   - type: web
     name: auth-service
-    env: java
+    env: docker
     plan: free
-    buildCommand: mvn -pl auth-service -am package -DskipTests -q
-    startCommand: java -jar auth-service/target/auth-service-0.0.1-SNAPSHOT.jar
+    dockerContext: .
+    dockerfile: Dockerfile
+    dockerBuildArgs:
+      - key: SERVICE_NAME
+        value: auth-service
     healthCheckPath: /actuator/health
     envVars:
       - key: DB_URL
-        sync: false          # e.g. jdbc:mysql://<host>:<port>/auth_db?useSSL=true&serverTimezone=UTC
+        sync: false
       - key: DB_USERNAME
         sync: false
       - key: DB_PASSWORD
         sync: false
       - key: JWT_SECRET
-        sync: false          # must be the same value as measurement-service
+        sync: false
 
   # ── Measurement Service ───────────────────────────────────────────────────────
   - type: web
     name: measurement-service
-    env: java
+    env: docker
     plan: free
-    buildCommand: mvn -pl measurement-service -am package -DskipTests -q
-    startCommand: java -jar measurement-service/target/measurement-service-0.0.1-SNAPSHOT.jar
+    dockerContext: .
+    dockerfile: Dockerfile
+    dockerBuildArgs:
+      - key: SERVICE_NAME
+        value: measurement-service
     healthCheckPath: /actuator/health
     envVars:
       - key: DB_URL
-        sync: false          # e.g. jdbc:mysql://<host>:<port>/measurement_db?useSSL=true&serverTimezone=UTC
+        sync: false
       - key: DB_USERNAME
         sync: false
       - key: DB_PASSWORD
         sync: false
       - key: JWT_SECRET
-        sync: false          # must match auth-service
+        sync: false
 
   # ── History Service ───────────────────────────────────────────────────────────
   - type: web
     name: history-service
-    env: java
+    env: docker
     plan: free
-    buildCommand: mvn -pl history-service -am package -DskipTests -q
-    startCommand: java -jar history-service/target/history-service-0.0.1-SNAPSHOT.jar
+    dockerContext: .
+    dockerfile: Dockerfile
+    dockerBuildArgs:
+      - key: SERVICE_NAME
+        value: history-service
     healthCheckPath: /actuator/health
     envVars:
       - key: DB_URL
-        sync: false          # same as measurement-service (shared measurement_db)
+        sync: false
       - key: DB_USERNAME
         sync: false
       - key: DB_PASSWORD
+        sync: false
+      - key: JWT_SECRET
         sync: false
