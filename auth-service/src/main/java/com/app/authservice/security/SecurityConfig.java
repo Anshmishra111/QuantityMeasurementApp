@@ -30,9 +30,6 @@ public class SecurityConfig {
                                 // ❌ Disable CSRF (important for APIs)
                                 .csrf(csrf -> csrf.disable())
  
-                                // ✅ Enable CORS (VERY IMPORTANT for frontend)
-                                .cors(cors -> {
-                                })
  
                                 // 🔐 Authorization rules
                                 .authorizeHttpRequests(auth -> auth
