@@ -4,6 +4,7 @@ services:
     name: quantity-measurement-app
     env: docker
     plan: free
+    autoDeploy: yes
     dockerContext: .
     dockerfilePath: Dockerfile
     healthCheckPath: /actuator/health
@@ -24,6 +25,7 @@ services:
     name: auth-service
     env: docker
     plan: free
+    autoDeploy: yes
     dockerContext: .
     dockerfilePath: Dockerfile
     healthCheckPath: /actuator/health
@@ -44,6 +46,7 @@ services:
     name: measurement-service
     env: docker
     plan: free
+    autoDeploy: yes
     dockerContext: .
     dockerfilePath: Dockerfile
     healthCheckPath: /actuator/health
@@ -64,6 +67,7 @@ services:
     name: history-service
     env: docker
     plan: free
+    autoDeploy: yes
     dockerContext: .
     dockerfilePath: Dockerfile
     healthCheckPath: /actuator/health
