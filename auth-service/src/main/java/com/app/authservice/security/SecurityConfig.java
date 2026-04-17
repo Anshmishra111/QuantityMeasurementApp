@@ -4,43 +4,51 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/**
- * Auth-service security:
- *  - /auth/signup and /auth/login are fully public (no token needed)
- *  - H2 console permitted for development
- */
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   JwtFilter jwtFilter) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers(
-                            "/auth/**",
-                            "/h2-console/**",
-                            "/actuator/**"
-                    ).permitAll()
-                    .anyRequest().authenticated()
-            )
-            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        private final JwtFilter jwtFilter;
 
-        return http.build();
-    }
+        public SecurityConfig(JwtFilter jwtFilter) {
+                this.jwtFilter = jwtFilter;
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+                http
+                                // ❌ Disable CSRF (important for APIs)
+                                .csrf(csrf -> csrf.disable())
+
+                                // ✅ Enable CORS (VERY IMPORTANT for frontend)
+                                .cors(cors -> {
+                                })
+
+                                // 🔐 Authorization rules
+                                .authorizeHttpRequests(auth -> auth
+                                                // Allow preflight requests
+                                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                                                // Public endpoints
+                                                .requestMatchers(
+                                                                "/auth/**",
+                                                                "/h2-console/**",
+                                                                "/actuator/**")
+                                                .permitAll()
+
+                                                // All others need authentication
+                                                .anyRequest().authenticated())
+
+                                // Fix for H2 console (optional)
+                                .headers(headers -> headers
+                                                .frameOptions(frame -> frame.sameOrigin()))
+
+                                // 🔑 Add JWT filter
+                                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+                return http.build();
+        }
 }
