@@ -38,20 +38,12 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- 🐘 PostgreSQL (IMPORTANT) -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- ❌ REMOVE MySQL (DO NOT USE) -->
-        <!--
+        <!-- 🐬 MySQL (ENABLED) -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
         </dependency>
-        -->
 
         <!-- 🧰 LOMBOK -->
         <dependency>
